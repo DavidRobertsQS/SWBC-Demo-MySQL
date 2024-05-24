@@ -180,9 +180,43 @@ const revenue = [
   { month: 'Dec', revenue: 4800 },
 ];
 
+const quotes = [
+  { id: '200976a1-9aea-45c7-ade2-b455847f44c7',
+    quoteCode: 'Q000001'
+  },
+  { id: '71f73100-ead5-4143-9a48-4b6a15998a78',
+    quoteCode: 'Q000002'
+  },
+  { id: 'cc0167b5-5124-4fe2-828c-b3467a090904',
+    quoteCode: 'Q000003'
+  },
+  { id: 'ac39bb9f-5c0c-44ca-b54a-31658152c069',
+    quoteCode: 'Q000004'
+  },
+  { id: 'ea8c168f-8736-4e07-9c24-a8cea8503414',
+    quoteCode: 'Q000005'
+  },
+  { id: 'ea8c168f-9248-4e07-9c24-a8cea8503414',
+    quoteCode: 'Q000006'
+  },
+  { id: 'ea8c168f-6125-4e07-9c24-a8cea8503414',
+    quoteCode: 'Q000007'
+  },
+  { id: 'ea8c168f-3489-4e07-9c24-a8cea8503414',
+    quoteCode: 'Q000008'
+  },
+  { id: 'ea8c168f-1058-4e07-9c24-a8cea8503414',
+    quoteCode: 'Q000009'
+  },
+  { id: 'ea8c168f-2748-4e07-9c24-a8cea8503414',
+    quoteCode: 'Q000010'
+  },
+];
+
 module.exports = {
   users,
   customers,
   invoices,
   revenue,
+  quotes,
 };

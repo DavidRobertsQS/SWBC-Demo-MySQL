@@ -4,6 +4,7 @@ const {
   customers,
   revenue,
   users,
+  quotes,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
 
@@ -160,6 +161,41 @@ async function seedRevenue(client) {
   }
 }
 
+async function seedQuotes(client) {
+  try {
+    // Create the "quotes" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS quotes (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        quoteCode varchar(25) DEFAULT NULL
+      );
+    `;
+
+    console.log(`Created "quotes" table`);
+
+    // Insert data into the "quotes" table
+    const insertedQuote = await Promise.all(
+      quotes.map(
+        (quote) => client.sql`
+        INSERT INTO quotes (id, quoteCode)
+        VALUES (${quote.id}, ${quote.quoteCode})
+        ON CONFLICT (ID) DO NOTHING;
+      `,
+      ),
+    );
+
+    console.log(`Seeded ${insertedQuote.length} quotes`);
+
+    return {
+      createTable,
+      quotes: insertedQuote,
+    };
+  } catch (error) {
+    console.error('Error seeding quotes:', error);
+    throw error;
+  }
+}
+
 async function main() {
   const client = await db.connect();
 
@@ -167,6 +203,7 @@ async function main() {
   await seedCustomers(client);
   await seedInvoices(client);
   await seedRevenue(client);
+  await seedQuotes(client);
 
   await client.end();
 }

@@ -7,6 +7,8 @@ import {
   LatestInvoiceRaw,
   User,
   Revenue,
+  QuoteForm,
+  QuotesTable
 } from './definitions';
 import { formatCurrency } from './utils';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -239,5 +241,68 @@ export async function getUser(email: string) {
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
+  }
+}
+
+export async function fetchQuotesPages(query: string) {
+  noStore();
+  try {
+    const count = await sql`SELECT COUNT(*)
+    FROM quotes
+    WHERE
+      quotes.quoteCode::text ILIKE ${`%${query}%`}
+  `;
+
+    const totalPages = Math.ceil(Number(count.rows[0].count) / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch total number of quotes.');
+  }
+}
+
+export async function fetchFilteredQuotes(
+  query: string,
+  currentPage: number,
+) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  noStore();
+
+  try {
+    const quotes = await sql<QuotesTable>`
+      SELECT
+        quotes.id,
+        quotes.quoteCode
+      FROM quotes
+      WHERE
+        quotes.quoteCode ILIKE ${`%${query}%`}
+      LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
+    `;
+
+    return quotes.rows;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch quotes.');
+  }
+}
+
+export async function fetchQuoteById(id: string) {
+  noStore();
+  try {
+    const data = await sql<QuoteForm>`
+      SELECT
+        quotes.id,
+        quotes.quoteCode
+      FROM quotes
+      WHERE quotes.id = ${id};
+    `;
+
+    const quote = data.rows.map((quote) => ({
+      ...quote,
+    }));
+    return quote[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch quote.');
   }
 }

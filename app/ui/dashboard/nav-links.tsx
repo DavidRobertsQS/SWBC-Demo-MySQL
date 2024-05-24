@@ -3,7 +3,8 @@ import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-  PencilIcon
+  PencilIcon,
+  MagnifyingGlassIcon
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -19,7 +20,8 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Quote', href: '/quote/commercial/quote-details', icon: PencilIcon },
+  { name: 'Quote Search', href: '/dashboard/quotes', icon: MagnifyingGlassIcon },
+  { name: 'New Quote', href: '/dashboard/quotes/create/quote-details', icon: PencilIcon, group: '/dashboard/quotes/create' },
 ];
 
 export default function NavLinks() {
@@ -34,7 +36,7 @@ export default function NavLinks() {
             href={link.href}
             className={clsx("flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
             {
-              'bg-sky-100 text-blue-600': pathname === link.href,
+              'bg-sky-100 text-blue-600': pathname === link.href || pathname.startsWith(link.group),
             },
           )}
           >

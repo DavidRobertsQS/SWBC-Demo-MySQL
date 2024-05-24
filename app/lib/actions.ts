@@ -24,7 +24,8 @@ export async function authenticate(
     throw error;
   }
 }
- 
+
+// Invoice
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
@@ -94,5 +95,73 @@ export async function deleteInvoice(id: string) {
     return { message: 'Deleted Invoice.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Invoice.' };
+  }
+}
+
+// Quote
+const FormSchemaQuote = z.object({
+  quoteID: z.string(),
+  quoteCode: z.string(),
+});
+ 
+const CreateQuote = FormSchemaQuote.omit({});
+ 
+export async function createQuote(formData: FormData) {
+    const { quoteID, quoteCode } = CreateQuote.parse({
+      quoteID: formData.get('quoteID'),
+      quoteCode: formData.get('quoteCode'),
+    });
+
+    try {
+      await sql`
+        INSERT INTO quotes (id, quoteCode)
+        VALUES (${quoteID}, ${quoteCode})
+      `;
+    } catch (error) {
+      return {
+        message: 'Database Error: Failed to Create Quote.',
+      };
+    }
+
+    revalidatePath('/dashboard/quotes');
+    redirect('/dashboard/quotes');
+  }
+
+  // Use Zod to update the expected types
+const UpdateQuote = FormSchemaQuote.omit({});
+ 
+// ...
+ 
+export async function updateQuote(id: string, formData: FormData) {
+  console.log('id: ', id);
+  console.log('formData: ', formData);
+  const { quoteID, quoteCode } = UpdateQuote.parse({
+    quoteID: formData.get('quoteID'),
+    quoteCode: formData.get('quoteCode'),
+  });
+  console.log('quoteID: ', quoteID);
+  console.log('quoteCode: ', quoteCode);
+  
+  try {
+    await sql`
+        UPDATE quotes
+        SET quotecode = ${quoteCode}
+        WHERE id = ${quoteID}
+      `;
+  } catch (error) {
+    return { message: 'Database Error: Failed to Update Quote.' };
+  }
+ 
+  revalidatePath('/dashboard/quotes');
+  redirect('/dashboard/quotes?updated=1');
+}
+
+export async function deleteQuote(id: string) {
+  try {
+    await sql`DELETE FROM quotes WHERE id = ${id}`;
+    revalidatePath('/dashboard/quotes');
+    return { message: 'Deleted Quote.' };
+  } catch (error) {
+    return { message: 'Database Error: Failed to Delete Quote.' };
   }
 }

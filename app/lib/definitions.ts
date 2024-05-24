@@ -86,3 +86,13 @@ export type InvoiceForm = {
   amount: number;
   status: 'pending' | 'paid';
 };
+
+export type QuotesTable = {
+  id: string;
+  quoteCode: string;
+};
+
+export type QuoteForm = {
+  id: string;
+  quoteCode: string;
+};
