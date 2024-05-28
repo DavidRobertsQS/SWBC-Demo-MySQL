@@ -102,20 +102,22 @@ export async function deleteInvoice(id: string) {
 const FormSchemaQuote = z.object({
   quoteID: z.string(),
   quoteCode: z.string(),
+  effectiveDate: z.string(),
 });
  
 const CreateQuote = FormSchemaQuote.omit({});
  
 export async function createQuote(formData: FormData) {
-    const { quoteID, quoteCode } = CreateQuote.parse({
+    const { quoteID, quoteCode, effectiveDate } = CreateQuote.parse({
       quoteID: formData.get('quoteID'),
       quoteCode: formData.get('quoteCode'),
+      effectiveDate: formData.get('effectiveDate'),
     });
 
     try {
       await sql`
-        INSERT INTO quotes (id, quoteCode)
-        VALUES (${quoteID}, ${quoteCode})
+        INSERT INTO quotes (id, quoteCode, effectiveDate)
+        VALUES (${quoteID}, ${quoteCode}, ${effectiveDate})
       `;
     } catch (error) {
       return {
@@ -135,17 +137,19 @@ const UpdateQuote = FormSchemaQuote.omit({});
 export async function updateQuote(id: string, formData: FormData) {
   console.log('id: ', id);
   console.log('formData: ', formData);
-  const { quoteID, quoteCode } = UpdateQuote.parse({
+  const { quoteID, quoteCode, effectiveDate } = UpdateQuote.parse({
     quoteID: formData.get('quoteID'),
     quoteCode: formData.get('quoteCode'),
+    effectiveDate: formData.get('effectiveDate'),
   });
   console.log('quoteID: ', quoteID);
   console.log('quoteCode: ', quoteCode);
+  console.log('effectiveDate: ', effectiveDate);
   
   try {
     await sql`
         UPDATE quotes
-        SET quotecode = ${quoteCode}
+        SET quotecode = ${quoteCode}, effectiveDate = ${effectiveDate}
         WHERE id = ${quoteID}
       `;
   } catch (error) {

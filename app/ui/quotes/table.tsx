@@ -29,16 +29,16 @@ export default async function QuotesTable({
                     <div className="mb-2 flex items-center">
                       {quote.quotecode}
                     </div>
-                    <p className="text-sm text-gray-500">{quote.email}</p>
+                    <p className="text-sm text-gray-500">{quote.application}</p>
                   </div>
                   <QuoteStatus status={quote.status} />
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div>
                     <p className="text-xl font-medium">
-                      {quote.amount}
+                      {quote.brokeragent}
                     </p>
-                    <p>{quote.date}</p>
+                    <p>{quote.effectivedate}</p>
                   </div>
                   <div className="flex justify-end gap-2">
                     <UpdateQuote id={quote.id} />
@@ -55,13 +55,13 @@ export default async function QuotesTable({
                   Quote Code
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Email
+                  Application
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Amount
+                  Broker / Agent
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
-                  Date
+                  Effective Date
                 </th>
                 <th scope="col" className="px-3 py-5 font-medium">
                   Status
@@ -83,13 +83,13 @@ export default async function QuotesTable({
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {quote.email}
+                    {quote.application}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {quote.amount}
+                    {quote.brokeragent}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
-                    {quote.date}
+                    {quote.effectivedate}
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">
                     <QuoteStatus status={quote.status} />

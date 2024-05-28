@@ -272,7 +272,8 @@ export async function fetchFilteredQuotes(
     const quotes = await sql<QuotesTable>`
       SELECT
         quotes.id,
-        quotes.quoteCode
+        quotes.quoteCode,
+        COALESCE(to_char(effectiveDate, 'MM-DD-YYYY'), '') AS effectiveDate
       FROM quotes
       WHERE
         quotes.quoteCode ILIKE ${`%${query}%`}
@@ -292,7 +293,9 @@ export async function fetchQuoteById(id: string) {
     const data = await sql<QuoteForm>`
       SELECT
         quotes.id,
-        quotes.quoteCode
+        quotes.quoteCode,
+        COALESCE(to_char(effectiveDate, 'MM-DD-YYYY'), '') AS effectiveDate,
+        COALESCE(to_char(effectiveDate, 'YYYY-MM-DD'), '') AS effectiveDateValid
       FROM quotes
       WHERE quotes.id = ${id};
     `;
@@ -304,5 +307,50 @@ export async function fetchQuoteById(id: string) {
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch quote.');
+  }
+}
+
+export async function fetchAgents() {
+  noStore();
+  try {
+    const data = await sql<CustomerField>`
+      SELECT
+        '126eed9c-3344-4ef6-a4a8-fcf7408d3c66' as value,
+        'Agent 001' as label
+      UNION
+      SELECT
+        '126eed9c-4455-4ef6-a4a8-fcf7408d3c66' as value,
+        'Agent 007' as label
+    `;
+
+    const agents = data.rows;
+    return agents;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all agents.');
+  }
+}
+
+export async function fetchApplication() {
+  noStore();
+  try {
+    const data = await sql<CustomerField>`
+      SELECT
+        '126eed9c-2121-4ef6-a4a8-fcf7408d3c66' as value,
+        'Primary' as label,
+        1 as sortOrder
+      UNION
+      SELECT
+        '126eed9c-1212-4ef6-a4a8-fcf7408d3c66' as value,
+        'Excess' as label,
+        2 as sortOrder
+      ORDER BY sortOrder
+    `;
+
+    const applications = data.rows;
+    return applications;
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to fetch all applications.');
   }
 }

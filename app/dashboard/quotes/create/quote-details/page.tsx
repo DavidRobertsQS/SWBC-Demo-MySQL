@@ -3,6 +3,7 @@ import Breadcrumbs from '@/app/ui/quotes/breadcrumbs';
 import { fetchCustomers } from '@/app/lib/data';
 import { Metadata } from 'next';
 import QuoteSteps from '@/app/components/layout/QuoteSteps';
+import EffectiveDate from '@/app/components/layout/EffectiveDate';
  
 export const metadata: Metadata = {
   title: 'Create Quote',

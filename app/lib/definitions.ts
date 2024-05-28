@@ -90,6 +90,7 @@ export type InvoiceForm = {
 export type QuotesTable = {
   id: string;
   quoteCode: string;
+  effectiveDate: string;
 };
 
 export type QuoteForm = {

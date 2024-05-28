@@ -10,13 +10,20 @@ import {
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateQuote } from '@/app/lib/actions';
+import EffectiveDate from '@/app/components/layout/EffectiveDate';
+import Application from '@/app/components/layout/Application';
+import BrokerAgent from '@/app/components/layout/BrokerAgent';
 
 export default function EditQuoteForm({
   quote,
   customers,
+  agents,
+  applications,
 }: {
   quote: QuoteForm;
   customers: CustomerField[];
+  agents: CustomerField[];
+  applications: CustomerField[];
 }) {
   const updateQuoteWithId = updateQuote.bind(null, quote.id);
 
@@ -26,6 +33,7 @@ export default function EditQuoteForm({
   // };
 
   console.log('qqqqqqqqqquote: ', quote);
+  console.log('customers: ', customers);
   // console.log('updateQuoteWithId: ', updateQuoteWithId);
 
   return (
@@ -33,6 +41,9 @@ export default function EditQuoteForm({
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
+          <EffectiveDate label="Effective Date" name="effectiveDate" defaultValue={quote.effectivedatevalid} />
+          <Application label="Application" name="application" options={applications} />
+          <BrokerAgent label="Broker / Agent" name="brokeragent" options={agents} />
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
             Choose customer
           </label>

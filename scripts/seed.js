@@ -167,18 +167,25 @@ async function seedQuotes(client) {
     const createTable = await client.sql`
       CREATE TABLE IF NOT EXISTS quotes (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        quoteCode varchar(25) DEFAULT NULL
+        quoteCode varchar(25) DEFAULT NULL,
+        effectiveDate TIMESTAMP DEFAULT NULL
       );
     `;
 
     console.log(`Created "quotes" table`);
 
+    const alterTable = await client.sql`
+      ALTER TABLE quotes ADD COLUMN IF NOT EXISTS effectiveDate TIMESTAMP DEFAULT NULL;
+    `;
+
+    console.log(`Altered "quotes" table`);
+
     // Insert data into the "quotes" table
     const insertedQuote = await Promise.all(
       quotes.map(
         (quote) => client.sql`
-        INSERT INTO quotes (id, quoteCode)
-        VALUES (${quote.id}, ${quote.quoteCode})
+        INSERT INTO quotes (id, quoteCode, effectiveDate)
+        VALUES (${quote.id}, ${quote.quoteCode},  ${quote.effectiveDate})
         ON CONFLICT (ID) DO NOTHING;
       `,
       ),
@@ -188,6 +195,7 @@ async function seedQuotes(client) {
 
     return {
       createTable,
+      alterTable,
       quotes: insertedQuote,
     };
   } catch (error) {

@@ -1,6 +1,6 @@
 import Form from '@/app/ui/quotes/edit-form';
 import Breadcrumbs from '@/app/ui/quotes/breadcrumbs';
-import { fetchQuoteById, fetchCustomers } from '@/app/lib/data';
+import { fetchQuoteById, fetchCustomers, fetchAgents, fetchApplication } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import QuoteSteps from '@/app/components/layout/QuoteSteps';
@@ -11,9 +11,11 @@ export const metadata: Metadata = {
  
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
-    const [quote, customers] = await Promise.all([
+    const [quote, customers, agents, applications] = await Promise.all([
         fetchQuoteById(id),
         fetchCustomers(),
+        fetchAgents(),
+        fetchApplication(),
       ]);
       
       if (!quote) {
@@ -33,7 +35,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           { label: 'Contacts', href: '/dashboard/contacts' },
         ]}
       /> */}
-      <Form quote={quote} customers={customers} />
+      <Form quote={quote} customers={customers} agents={agents} applications={applications} />
     </main>
   );
 }
