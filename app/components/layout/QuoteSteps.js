@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { Divider, Steps } from 'antd';
 import Link from 'next/link';
@@ -12,32 +12,32 @@ const QuoteSteps = ({ ...property }) => {
     {
       // title,
       description: 'Quote Details',
-      link: '/dashboard/quotes/create/quote-details'
+      link: '/quotes/create/quote-details'
     },
     {
       // title,
       description: 'Contacts',
-      link: '/dashboard/quotes/create/contacts'
+      link: '/quotes/create/contacts'
     },
     {
       // title,
       description: 'Property Details',
-      link: '/dashboard/quotes/create/property-details'
+      link: '/quotes/create/property-details'
     },
     {
       // title,
       description: 'Construction',
-      link: '/dashboard/quotes/create/construction'
+      link: '/quotes/create/construction'
     },
     {
       // title,
       description: 'Contents / Limits',
-      link: '/dashboard/quotes/create/limits'
+      link: '/quotes/create/limits'
     },
     {
       // title,
       description: 'Rate Results',
-      link: '/dashboard/quotes/create/rate-results'
+      link: '/quotes/create/rate-results'
     },
   ];
   const router = useRouter();
@@ -75,7 +75,6 @@ const QuoteSteps = ({ ...property }) => {
       />
 
       <Divider />
-
     </>
   );
 };

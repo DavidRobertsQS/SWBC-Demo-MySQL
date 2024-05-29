@@ -23,13 +23,16 @@ export default async function Page({ params }: { params: { id: string } }) {
       }
   return (
     <main>
+      <h1 className='text-blue-600 text-2xl font-bold'>Commercial Flood Quote: {quote.quotecode}</h1>
+      <h1 className='text-blue-600 text-sm'>Effective: {quote.effectivedate}</h1>
+      <h1 className='text-blue-600 text-sm mb-5'>{quote.organizationname} - {quote.mailaddress1}, {quote.mailcity} {quote.mailstate} {quote.mailzip}</h1>
       <QuoteSteps />
       {/* <Breadcrumbs
         breadcrumbs={[
-          { label: 'Quotes', href: '/dashboard/quotes' },
+          { label: 'Quotes', href: '/quotes' },
           {
             label: 'Edit Quote',
-            href: `/dashboard/quotes/${id}/edit`,
+            href: `/quotes/${id}/edit`,
             active: true,
           },
           { label: 'Contacts', href: '/dashboard/contacts' },

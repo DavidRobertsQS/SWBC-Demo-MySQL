@@ -165,10 +165,20 @@ async function seedQuotes(client) {
   try {
     // Create the "quotes" table if it doesn't exist
     const createTable = await client.sql`
+      DROP TABLE IF EXISTS quotes;
       CREATE TABLE IF NOT EXISTS quotes (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        quoteCode varchar(25) DEFAULT NULL,
-        effectiveDate TIMESTAMP DEFAULT NULL
+        quoteCode VARCHAR(25) DEFAULT NULL,
+        effectiveDate TIMESTAMP DEFAULT NULL,
+        application INTEGER DEFAULT NULL,
+        organizationName VARCHAR(150) DEFAULT NULL,
+        mailAddress1 varchar(75) DEFAULT NULL,
+        mailAddress2 varchar(75) NULL DEFAULT NULL,
+        mailCity varchar(75) NULL DEFAULT NULL,
+        mailState varchar(2) NULL DEFAULT NULL,
+        mailZip varchar(5) NULL DEFAULT NULL,
+        mailZip4 varchar(4) NULL DEFAULT NULL,
+        mailCounty varchar(100) DEFAULT NULL
       );
     `;
 
@@ -184,8 +194,11 @@ async function seedQuotes(client) {
     const insertedQuote = await Promise.all(
       quotes.map(
         (quote) => client.sql`
-        INSERT INTO quotes (id, quoteCode, effectiveDate)
-        VALUES (${quote.id}, ${quote.quoteCode},  ${quote.effectiveDate})
+        INSERT INTO quotes (id, quoteCode, effectiveDate, application, organizationName, mailAddress1,
+          mailAddress2, mailCity, mailState, mailZip, mailZip4, mailCounty
+        )
+        VALUES (${quote.id}, ${quote.quoteCode},  ${quote.effectiveDate}, ${quote.application}, ${quote.organizationName}, ${quote.mailAddress1},
+          ${quote.mailAddress2}, ${quote.mailCity}, ${quote.mailState}, ${quote.mailZip}, ${quote.mailZip4}, ${quote.mailCounty})
         ON CONFLICT (ID) DO NOTHING;
       `,
       ),

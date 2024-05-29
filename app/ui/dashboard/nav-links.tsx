@@ -20,8 +20,8 @@ const links = [
     icon: DocumentDuplicateIcon,
   },
   { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
-  { name: 'Quote Search', href: '/dashboard/quotes', icon: MagnifyingGlassIcon },
-  { name: 'New Quote', href: '/dashboard/quotes/create/quote-details', icon: PencilIcon, group: '/dashboard/quotes/create' },
+  { name: 'Quote Search', href: '/quotes', icon: MagnifyingGlassIcon },
+  { name: 'New Quote', href: '/quotes/create/quote-details', icon: PencilIcon, group: '/quotes/create' },
 ];
 
 export default function NavLinks() {

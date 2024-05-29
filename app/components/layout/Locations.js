@@ -1,6 +1,7 @@
 'use client';
 
 import { Table } from 'antd';
+import { UpdateQuote, DeleteQuote } from '@/app/ui/quotes/buttons';
 
 const data = [
   {
@@ -10,6 +11,7 @@ const data = [
     dueDate: '4/20/2024',
     manufactured: 4,
     status: 'FL',
+    actions: ['update','delete'],
   },
   {
     key: '2',

@@ -270,15 +270,19 @@ export async function fetchFilteredQuotes(
 
   try {
     const quotes = await sql<QuotesTable>`
-      SELECT
-        quotes.id,
-        quotes.quoteCode,
+      SELECT *,
         COALESCE(to_char(effectiveDate, 'MM-DD-YYYY'), '') AS effectiveDate
       FROM quotes
       WHERE
         quotes.quoteCode ILIKE ${`%${query}%`}
+      ORDER BY quoteCode
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
+
+    // const quotes = data.rows.map((quote) => ({
+    //   ...quote,
+    //   effectiveDate: formatCurrency(quote.total_pending),
+    // }));
 
     return quotes.rows;
   } catch (error) {
@@ -291,9 +295,7 @@ export async function fetchQuoteById(id: string) {
   noStore();
   try {
     const data = await sql<QuoteForm>`
-      SELECT
-        quotes.id,
-        quotes.quoteCode,
+      SELECT *,
         COALESCE(to_char(effectiveDate, 'MM-DD-YYYY'), '') AS effectiveDate,
         COALESCE(to_char(effectiveDate, 'YYYY-MM-DD'), '') AS effectiveDateValid
       FROM quotes
@@ -336,12 +338,12 @@ export async function fetchApplication() {
   try {
     const data = await sql<CustomerField>`
       SELECT
-        '126eed9c-2121-4ef6-a4a8-fcf7408d3c66' as value,
+        1 as value,
         'Primary' as label,
         1 as sortOrder
       UNION
       SELECT
-        '126eed9c-1212-4ef6-a4a8-fcf7408d3c66' as value,
+        2 as value,
         'Excess' as label,
         2 as sortOrder
       ORDER BY sortOrder

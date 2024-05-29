@@ -12,7 +12,7 @@ export default async function QuotesTable({
   currentPage: number;
 }) {
   const quotes = await fetchFilteredQuotes(query, currentPage);
-  console.log('quotes are: ', quotes);
+  // console.log('quotes are: ', quotes);
 
   return (
     <div className="mt-6 flow-root">

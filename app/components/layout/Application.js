@@ -14,7 +14,7 @@ const Application = (property) => {
   }
   return (
     <Form.Item label={property?.label} name={property.name}>
-      <Select
+      <Select 
         defaultValue={property.defaultValue}
         style={property.style}
         onChange={property.handleChange}

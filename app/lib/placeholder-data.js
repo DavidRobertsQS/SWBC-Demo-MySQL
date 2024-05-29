@@ -182,13 +182,41 @@ const revenue = [
 
 const quotes = [
   { id: '200976a1-9aea-45c7-ade2-b455847f44c7',
-    quoteCode: 'Q000001'
+    quoteCode: 'Q000001',
+    effectiveDate: '2024-05-28',
+    application: '1',
+    organizationName: 'Insured One',
+    mailAddress1: '100 Main',
+    mailAddress2: 'Suite #1',
+    mailCity: 'Bradenton',
+    mailState: 'FL',
+    mailZip: '34202',
+    mailZip4: '2121',
+    mailCounty: 'Manatee'
   },
   { id: '71f73100-ead5-4143-9a48-4b6a15998a78',
-    quoteCode: 'Q000002'
+    quoteCode: 'Q000002',
+    effectiveDate: '2024-05-21',
+    application: '2',
+    organizationName: 'Insured Two',
+    mailAddress1: '200 Main',
+    mailAddress2: 'Suite #2',
+    mailCity: 'Lexington',
+    mailState: 'KY',
+    mailZip: '40509',
+    mailZip4: '4343',
+    mailCounty: 'Fayette'
   },
   { id: 'cc0167b5-5124-4fe2-828c-b3467a090904',
-    quoteCode: 'Q000003'
+    quoteCode: 'Q000003',
+    effectiveDate: '2024-05-24',
+    application: '1',
+    organizationName: 'Insured Three',
+    mailAddress1: '300 Main',
+    mailCity: 'Tampa',
+    mailState: 'FL',
+    mailZip: '38945',
+    mailCounty: 'Orange'
   },
   { id: 'ac39bb9f-5c0c-44ca-b54a-31658152c069',
     quoteCode: 'Q000004'

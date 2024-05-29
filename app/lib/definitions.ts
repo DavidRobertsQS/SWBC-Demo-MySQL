@@ -91,9 +91,23 @@ export type QuotesTable = {
   id: string;
   quoteCode: string;
   effectiveDate: string;
+  application: number;
+  organizationName: string;
+  mailAddress1: string;
+  mailAddress2: string;
+  mailCity: string;
+  mailState: string;
+  mailZip: string;
+  mailZip4: string;
+  mailCounty: string;
 };
 
 export type QuoteForm = {
   id: string;
   quoteCode: string;
+};
+
+export type ApplicationField = {
+  value: string;
+  label: string;
 };
