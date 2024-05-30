@@ -12,32 +12,32 @@ const QuoteSteps = ({ ...property }) => {
     {
       // title,
       description: 'Quote Details',
-      link: '/quotes/create/quote-details'
+      link: '/quote/create/quote-details'
     },
     {
       // title,
       description: 'Contacts',
-      link: '/quotes/create/contacts'
+      link: '/quote/create/contacts'
     },
     {
       // title,
       description: 'Property Details',
-      link: '/quotes/create/property-details'
+      link: '/quote/create/property-details'
     },
     {
       // title,
       description: 'Construction',
-      link: '/quotes/create/construction'
+      link: '/quote/create/construction'
     },
     {
       // title,
       description: 'Contents / Limits',
-      link: '/quotes/create/limits'
+      link: '/quote/create/limits'
     },
     {
       // title,
       description: 'Rate Results',
-      link: '/quotes/create/rate-results'
+      link: '/quote/create/rate-results'
     },
   ];
   const router = useRouter();

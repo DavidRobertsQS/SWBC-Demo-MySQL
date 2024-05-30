@@ -18,16 +18,6 @@ export default async function Page() {
       <Suspense fallback={<CardSkeleton />}>
       <QuoteSteps />
       </Suspense>
-      {/* <Breadcrumbs
-        breadcrumbs={[
-          { label: 'Quotes', href: '/dashboard/quotes' },
-          {
-            label: 'Create Quote',
-            href: '/dashboard/quotes/create',
-            active: true,
-          },
-        ]}
-      /> */}
       <Form customers={customers} />
     </main>
   );

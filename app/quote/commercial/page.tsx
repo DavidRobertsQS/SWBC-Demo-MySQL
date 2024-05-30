@@ -11,6 +11,7 @@ export const metadata: Metadata = {
  
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
+    console.log('page id isssssssss: ', id);
     const [quote, customers, agents, applications] = await Promise.all([
         fetchQuoteById(id),
         fetchCustomers(),
@@ -18,26 +19,22 @@ export default async function Page({ params }: { params: { id: string } }) {
         fetchApplication(),
       ]);
       
-      if (!quote) {
-        notFound();
-      }
+      // if (!quote) {
+      //   notFound();
+      // }
   return (
     <main>
-      <h1 className='text-blue-600 text-2xl font-bold'>Commercial Flood Quote: {quote.quotecode}</h1>
-      <h1 className='text-blue-600 text-sm'>Effective: {quote.effectivedate}</h1>
-      <h1 className='text-blue-600 text-sm mb-5'>{quote.organizationname} - {quote.mailaddress1}, {quote.mailcity} {quote.mailstate} {quote.mailzip}</h1>
+      {quote ? 
+      <>
+        <h1 className='text-blue-600 text-2xl font-bold'>Commercial Flood Quote: {quote.quotecode}</h1>
+        <h1 className='text-blue-600 text-sm'>Effective: {quote.effectivedate}</h1>
+        <h1 className='text-blue-600 text-sm mb-5'>{quote.organizationname} - {quote.mailaddress1}, {quote.mailcity} {quote.mailstate} {quote.mailzip}</h1>
+      </>
+      : <h1 className='text-blue-600 text-2xl font-bold mb-5'>New Commercial Flood Quote</h1>
+      }
       <QuoteSteps />
-      {/* <Breadcrumbs
-        breadcrumbs={[
-          { label: 'Quotes', href: '/quotes' },
-          {
-            label: 'Edit Quote',
-            href: `/quotes/${id}/edit`,
-            active: true,
-          },
-          { label: 'Contacts', href: '/dashboard/contacts' },
-        ]}
-      /> */}
+      <h1 className='text-blue-600 text-xl font-bold'>Quote Details</h1>
+      <h1 className='text-blue-600 text-sm mb-5'>Enter Quote Information</h1>
       <Form quote={quote} customers={customers} agents={agents} applications={applications} />
     </main>
   );

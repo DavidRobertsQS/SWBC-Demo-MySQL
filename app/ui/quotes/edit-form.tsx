@@ -19,6 +19,7 @@ import MailingAddress2 from '@/app/components/layout/MailingAddress2';
 import MailingCity from '@/app/components/layout/MailingCity';
 import MailingState from '@/app/components/layout/MailingState';
 import MailingZip from '@/app/components/layout/MailingZip';
+import { Form } from 'antd';
 
 export default function EditQuoteForm({
   quote,
@@ -31,7 +32,7 @@ export default function EditQuoteForm({
   agents: CustomerField[];
   applications: ApplicationField[];
 }) {
-  const updateQuoteWithId = updateQuote.bind(null, quote.id);
+  const updateQuoteWithId = updateQuote.bind(null, quote?.id);
 
   // const displayToast = (quote) => {
   //   updateQuote.bind(null, quote.id);
@@ -41,16 +42,41 @@ export default function EditQuoteForm({
   console.log('qqqqqqqqqquote: ', quote);
   console.log('customers: ', customers);
   console.log('applications: ', applications);
+  const [form] = Form.useForm();
+  const rules = {
+    brokeragent: [
+      {
+        required: true,
+        message: 'Please select a broker/agent!',
+      },
+    ],
+    mailaddress1: [
+      {
+        required: true,
+        message: 'Please input a mailing address!',
+      },
+    ],
+    mailcity: [
+      {
+        required: true,
+        message: 'Please input a mailing city!',
+      },
+    ]
+  };
+  // const mailaddress1rules = [
+  //   {
+  //     required: true,
+  //     message: 'Please input a mailing address!',
+  //   },
+  // ];
   // console.log('updateQuoteWithId: ', updateQuoteWithId);
 
   return (
-    <form action={updateQuoteWithId}>
-      <h1 className='text-blue-600 text-xl font-bold'>Quote Details</h1>
-      <h1 className='text-blue-600 text-sm mb-5'>Enter Quote Information</h1>
+    <Form form={form} scrollToFirstError onFinish={updateQuoteWithId}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Customer Name */}
         <div className="mb-4">
-          <EffectiveDate label="Effective Date" name="effectiveDate" defaultValue={quote.effectivedatevalid} />
+          <EffectiveDate label="Effective Date" name="effectiveDate" defaultValue={quote?.effectivedatevalid} />
           {/* <Application label="Application" name="application" options={applications} defaultValue={quote.application} /> */}
           <label htmlFor="application" className="mb-2 block text-sm font-medium">
             Application
@@ -60,12 +86,9 @@ export default function EditQuoteForm({
               id="application"
               name="application"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue={quote.application}
+              defaultValue={quote?.application}
             >
-              <option value="" disabled>
-                Select an application
-              </option>
-              {applications.map((application) => (
+              {applications?.map((application) => (
                 <option key={application.value} value={application.value}>
                   {application.label}
                 </option>
@@ -73,13 +96,13 @@ export default function EditQuoteForm({
             </select>
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
-          <BrokerAgent label="Broker / Agent" name="brokeragent" options={agents} />
+          <BrokerAgent label="Broker / Agent" name="brokeragent" options={agents} rules={rules.brokeragent} />
           <Locations columns={[{"title":"Location","dataIndex":"key"},{"title":"Limit","dataIndex":"dueDate"},{"title":"Contents","dataIndex":"insuredName"},{"title":"Step","dataIndex":"status"},{"title":"Actions","dataIndex":"actions"}]} />
-          <MailingAddress label="Mailing Address" name="mailaddress1" defaultValue={quote.mailaddress1} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
-          <MailingAddress2 label="Mailing Address 2" name="mailaddress2" defaultValue={quote.mailaddress2} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
-          <MailingCity label="Mailing City" name="mailcity" defaultValue={quote.mailcity} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
-          <MailingState label="Mailing State" name="mailstate" defaultValue={quote.mailstate} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
-          <MailingZip label="Mailing ZIP" name="mailzip" defaultValue={quote.mailzip} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
+          <MailingAddress label="Mailing Address" name="mailaddress1" defaultValue={quote?.mailaddress1} rules={rules.mailaddress1} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
+          <MailingAddress2 label="Mailing Address 2" name="mailaddress2" defaultValue={quote?.mailaddress2} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
+          <MailingCity label="Mailing City" name="mailcity" rules={rules.mailcity} defaultValue={quote?.mailcity} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
+          <MailingState label="Mailing State" name="mailstate" defaultValue={quote?.mailstate} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
+          <MailingZip label="Mailing ZIP" name="mailzip" defaultValue={quote?.mailzip} className="peer block w-full rounded-md border border-gray-200 py-2 text-sm outline-2 placeholder:text-gray-500" />
           <label htmlFor="customer" className="mb-2 block text-sm font-medium">
             Choose customer
           </label>
@@ -88,7 +111,7 @@ export default function EditQuoteForm({
               id="customer"
               name="customerId"
               className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-              defaultValue={quote.customer_id}
+              defaultValue={quote?.customer_id}
             >
               <option value="" disabled>
                 Select a customer
@@ -114,7 +137,7 @@ export default function EditQuoteForm({
                 id="quoteID"
                 name="quoteID"
                 type="text"
-                defaultValue={quote.id}
+                defaultValue={quote?.id}
                 placeholder="Enter Quote ID"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               />
@@ -134,7 +157,7 @@ export default function EditQuoteForm({
                 id="quoteCode"
                 name="quoteCode"
                 type="text"
-                defaultValue={quote.quotecode}
+                defaultValue={quote?.quotecode}
                 placeholder="Enter Quote Code"
                 className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               />
@@ -156,7 +179,7 @@ export default function EditQuoteForm({
                   name="status"
                   type="radio"
                   value="pending"
-                  defaultChecked={quote.status === 'pending'}
+                  defaultChecked={quote?.status === 'pending'}
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                 />
                 <label
@@ -172,7 +195,7 @@ export default function EditQuoteForm({
                   name="status"
                   type="radio"
                   value="paid"
-                  defaultChecked={quote.status === 'paid'}
+                  defaultChecked={quote?.status === 'paid'}
                   className="h-4 w-4 cursor-pointer border-gray-300 bg-gray-100 text-gray-600 focus:ring-2"
                 />
                 <label
@@ -188,13 +211,13 @@ export default function EditQuoteForm({
       </div>
       <div className="mt-6 flex justify-end gap-4">
         <Link
-          href="/quotes"
+          href="/quote"
           className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
         >
           Cancel
         </Link>
         <Button type="submit">Save Quote</Button>
       </div>
-    </form>
+    </Form>
   );
 }

@@ -13,7 +13,7 @@ const BrokerAgent = (property) => {
     }
   }
   return (
-    <Form.Item label={property?.label} name={property.name}>
+    <Form.Item label={property?.label} name={property.name} rules={property.rules}>
       <Select
         defaultValue={property.defaultValue}
         style={property.style}

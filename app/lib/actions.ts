@@ -29,19 +29,46 @@ export async function authenticate(
 const FormSchema = z.object({
   id: z.string(),
   customerId: z.string(),
-  amount: z.coerce.number(),
+  amount: z.coerce
+  .number()
+  .gt(0, { message: 'Please enter an amount greater than $0.' }),
   status: z.enum(['pending', 'paid']),
   date: z.string(),
 });
  
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
  
-export async function createInvoice(formData: FormData) {
-    const { customerId, amount, status } = CreateInvoice.parse({
-      customerId: formData.get('customerId'),
-      amount: formData.get('amount'),
-      status: formData.get('status'),
-    });
+export type State = {
+  errors?: {
+    customerId?: string[];
+    amount?: string[];
+    status?: string[];
+  };
+  message?: string | null;
+};
+
+export async function createInvoice(prevState: State, formData: FormData) {
+  console.log('createInvoice prevState: ', prevState);
+  console.log('createInvoice formData: ', formData);
+  // Validate form using Zod
+  const validatedFields = CreateInvoice.safeParse({
+    customerId: formData.get('customerId'),
+    amount: formData.get('amount'),
+    status: formData.get('status'),
+  });
+  console.log('createInvoice validatedFields: ', validatedFields);
+  console.log('createInvoice validatedFields.error.flatten().fieldErrors: ', validatedFields.error.flatten().fieldErrors);
+ 
+  // If form validation fails, return errors early. Otherwise, continue.
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Create Invoice.',
+    };
+  }
+  
+  // Prepare data for insertion into the database
+  const { customerId, amount, status } = validatedFields.data;
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
 
@@ -131,8 +158,8 @@ export async function createQuote(formData: FormData) {
       };
     }
 
-    revalidatePath('/quotes');
-    redirect('/quotes');
+    revalidatePath('/quote');
+    redirect('/quote');
   }
 
   // Use Zod to update the expected types
@@ -143,20 +170,21 @@ const UpdateQuote = FormSchemaQuote.omit({});
 export async function updateQuote(id: string, formData: FormData) {
   console.log('id: ', id);
   console.log('formData updateQuote: ', formData);
-  console.log('formData.application updateQuote: ', formData.get('application'));
+  console.log('formData.mailaddress1: ', formData.mailaddress1);
+  // console.log('formData.application updateQuote: ', formData.get('application'));
   // const fdApp = parseInt(formData.get('application'));
   // console.log('formData fdApp: ', fdApp);
   const { quoteID, quoteCode, effectiveDate, application, mailaddress1, mailaddress2, mailcity, mailstate, mailzip } = UpdateQuote.parse({
-    quoteID: formData.get('quoteID'),
-    quoteCode: formData.get('quoteCode'),
-    effectiveDate: formData.get('effectiveDate'),
-    application: formData.get('application'),
+    quoteID: formData.quoteID,
+    quoteCode: formData.quoteCode,
+    effectiveDate: formData.effectiveDate,
+    application: formData.application,
     // application: fdApp,
-    mailaddress1: formData.get('mailaddress1'),
-    mailaddress2: formData.get('mailaddress2'),
-    mailcity: formData.get('mailcity'),
-    mailstate: formData.get('mailstate'),
-    mailzip: formData.get('mailzip'),
+    mailaddress1: formData.mailaddress1,
+    mailaddress2: formData.mailaddress2,
+    mailcity: formData.mailcity,
+    mailstate: formData.mailstate,
+    mailzip: formData.mailzip,
   });
   console.log('quoteID: ', quoteID);
   console.log('quoteCode: ', quoteCode);
@@ -165,23 +193,26 @@ export async function updateQuote(id: string, formData: FormData) {
   console.log('application: ', application);
   
   try {
+    console.log('trying to update quote');
     await sql`
         UPDATE quotes
         SET quotecode = ${quoteCode}, effectiveDate = ${effectiveDate}, application = ${application}, mailaddress1 = ${mailaddress1}, mailaddress2 = ${mailaddress2}, mailcity = ${mailcity}, mailstate = ${mailstate}, mailzip = ${mailzip}
         WHERE id = ${quoteID}
       `;
   } catch (error) {
+    console.log('error trying to update quote: ', error);
+    throw new Error("Database Error: Failed to Update Quote.");
     return { message: 'Database Error: Failed to Update Quote.' };
   }
  
-  revalidatePath('/quotes');
-  redirect('/quotes');
+  revalidatePath('/quote');
+  redirect('/quote');
 }
 
 export async function deleteQuote(id: string) {
   try {
     await sql`DELETE FROM quotes WHERE id = ${id}`;
-    revalidatePath('/quotes');
+    revalidatePath('/quote');
     return { message: 'Deleted Quote.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Delete Quote.' };

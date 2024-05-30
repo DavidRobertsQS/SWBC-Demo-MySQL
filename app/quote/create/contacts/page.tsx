@@ -14,16 +14,6 @@ export default async function Page() {
   return (
     <main>
       <QuoteSteps />
-      {/* <Breadcrumbs
-        breadcrumbs={[
-          { label: 'Quotes', href: '/dashboard/quotes' },
-          {
-            label: 'Create Quote',
-            href: '/dashboard/quotes/create',
-            active: true,
-          },
-        ]}
-      /> */}
       Contacts Page
       <Form customers={customers} />
     </main>
