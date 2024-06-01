@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: {
-    template: 'SWBC | %s',
+    template: 'SWBC MySQL | %s',
     default: 'SWBC Dashboard',
   },
   description: 'The official SWBC Dashboard, built with App Router.',

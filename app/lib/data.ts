@@ -1,4 +1,5 @@
 import { sql } from '@vercel/postgres';
+import pool from "@/app/lib/mysql";
 import {
   CustomerField,
   CustomersTableType,
@@ -354,5 +355,37 @@ export async function fetchApplication() {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all applications.');
+  }
+}
+
+export async function fetchUserList() {
+  noStore();
+  try {
+    console.log('Fetching users...');
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+
+    //Postgresql
+    // const userList = await sql`SELECT * FROM users`;
+
+    //MySQL
+    const db = await pool.getConnection();
+    const query = 'select * from users';
+    const [data] = await db.execute(query);
+    db.release();
+    const userList = data.map((user) => ({
+        ...user,
+        image_url: '/customers/hector-simpson.png',
+      }));;
+
+    console.log('Data fetch completed after 3 seconds.', userList);
+
+    //Postgresql
+    // return userList.rows;
+
+    //MySQL
+    return userList;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch the latest invoices.');
   }
 }
